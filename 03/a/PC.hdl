@@ -16,5 +16,19 @@ CHIP PC {
     OUT out[16];
 
     PARTS:
-    // Put your code here:
+
+    // Get the flags and check in back order to be sure that if priority flag is 1 so this will be the last result.
+    // 1.get the regOut --> 2. check about the inc and change if needed --> 3. check load and change if needed --> 4. check reset and change
+    // the condition not defend on the bits (onlt the inc is change this) and its work because of this.
+    Register(in=resetMuxRes, load= true, out=out, out = regOut);
+
+    Inc16(in=regOut, out=resInc);
+
+    Mux16(a=loadMuxRes, b[0..15] = false, sel = reset, out = resetMuxRes);
+    Mux16(a=incMuxRes, b= in, sel = load, out = loadMuxRes);
+    Mux16(a=regOut, b=resInc, sel=inc, out= incMuxRes);
+
+    
+    
+    
 }
